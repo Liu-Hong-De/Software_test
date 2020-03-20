@@ -21,7 +21,10 @@ public class CoverageLongsTest {
 
     @After
     public void tearDown() {
+        hashes = null;
         coverageLongs = null;
+        coverageLongs_count_zero = null;
+
     }
 
     @Test
@@ -48,7 +51,8 @@ public class CoverageLongsTest {
 
 //    @Test
 //    public void testToString() {
-//        String toString = "Coverage [hashes=" + coverageLongs.getHashes() + ", ratio=1.8]";
+//        long[] res = coverageLongs.getHashes();
+//        String toString = "Coverage [hashes=" + res + ", ratio=1.8]";
 //        String oo = coverageLongs.toString();
 //        assertEquals(toString, oo);
 //    }
