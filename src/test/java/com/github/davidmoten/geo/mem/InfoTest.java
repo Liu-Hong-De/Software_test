@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class InfoTest<T, R> {
+public class InfoTest {
     private Info info;
 
     @Before
@@ -48,7 +48,6 @@ public class InfoTest<T, R> {
 
     @Test
     public void testToString() {
-        Optional<Integer> id = Optional.of(1);
         assertEquals("Info [lat=88.0, lon=12.0, time=20200317, value=12, id=Optional.of(1)]", info.toString());
     }
 }
