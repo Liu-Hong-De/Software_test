@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import javax.swing.event.ListDataEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class GeoHashTest {
@@ -111,34 +114,70 @@ public class GeoHashTest {
         assertEquals("310z", bottom);
     }
 
-//    @Test
-//    public void testAdjacentHash() {
-//    }
-//
-//    @Test
-//    public void neighbours() {
-//    }
-//
-//    @Test
-//    public void encodeHash() {
-//    }
-//
-//    @Test
-//    public void testEncodeHash() {
-//    }
-//
-//    @Test
-//    public void testEncodeHash1() {
-//    }
-//
+    @Test
+    public void testAdjacentHash() {
+        String adjacentHashOpposite = GeoHash.adjacentHash("72892", Direction.RIGHT, -2);
+        assertEquals("7283q", adjacentHashOpposite);
+
+        String adjacentHash = GeoHash.adjacentHash("72892", Direction.RIGHT, 2);
+        assertEquals("72896", adjacentHash);
+    }
+
+    @Test
+    public void neighbours() {
+        List<String> neighbours = new ArrayList<String>();
+        neighbours.add("9370");
+        neighbours.add("9378");
+        neighbours.add("9373");
+        neighbours.add("935r");
+        neighbours.add("9371");
+        neighbours.add("935p");
+        neighbours.add("9379");
+        neighbours.add("935x");
+
+        assertEquals(neighbours, GeoHash.neighbours("9372"));
+    }
+
+    @Test
+    public void testEncodeHashWithMaxHashLength() {
+        try {
+            String encodeHash = GeoHash.encodeHash(91, 3);
+            fail("no exception");
+        } catch (Exception message) {
+            assertTrue(message.getMessage().contains("latitude must be between -90 and 90 inclusive"));
+        }
+
+        assertEquals("s065kk0dc540", GeoHash.encodeHash(2, 3));
+    }
+
+    @Test
+    public void testEncodeHashWithLatAndLon() {
+        LatLong latLong = new LatLong(2, 3);
+        assertEquals("s065kk0d", GeoHash.encodeHash(latLong, 8));
+    }
+
+    @Test
+    public void testEncodeHashWithLatLonAndMaxLength() {
+        LatLong latLong = new LatLong(2, 3);
+        assertEquals("s065kk0dc540", GeoHash.encodeHash(latLong));
+    }
+
 //    @Test
 //    public void testEncodeHash2() {
 //    }
 //
-//    @Test
-//    public void fromLongToString() {
-//    }
-//
+    @Test
+    public void testFromLongToString() {
+        try {
+            String longToString = GeoHash.fromLongToString(-1);
+            fail("no exception");
+        } catch (Exception message) {
+            assertTrue(message.getMessage().contains("invalid long geohash -1"));
+        }
+
+        assertEquals("00000000", GeoHash.fromLongToString(8));
+    }
+
 //    @Test
 //    public void encodeHashToLong() {
 //    }
@@ -146,15 +185,19 @@ public class GeoHashTest {
 //    @Test
 //    public void decodeHash() {
 //    }
+
 //
-//    @Test
-//    public void hashLengthToCoverBoundingBox() {
-//    }
-//
-//    @Test
-//    public void hashContains() {
-//    }
-//
+    @Test
+    public void testHashLengthToCoverBoundingBox() {
+        assertEquals(3, GeoHash.hashLengthToCoverBoundingBox(52.4, 4.9, 52.3, 5));
+    }
+
+//    此hash是否為此lat和lon的hash之一
+    @Test
+    public void hashContains() {
+        assertEquals(true, GeoHash.hashContains("s06", 2, 3));
+    }
+
 //    @Test
 //    public void coverBoundingBox() {
 //    }
