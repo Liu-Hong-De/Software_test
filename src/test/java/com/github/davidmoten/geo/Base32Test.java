@@ -18,7 +18,7 @@ public class Base32Test {
 
     //    32進制加密
     @Test
-    public void encodeBase32() throws Exception {
+    public void testEncodeBase32() throws Exception {
         String encodeNegative = Base32.encodeBase32(-2, 2);
         assertEquals("-02", encodeNegative);
 
@@ -28,14 +28,14 @@ public class Base32Test {
 
     // 32進制加密，補零到12位數
     @Test
-    public void encodeBase32_2() throws  Exception {
+    public void testEncodeBase32_2() throws  Exception {
         String encode = Base32.encodeBase32(75324);
         assertEquals("0000000029jw", encode);
     }
 
     //    32進制解密
     @Test
-    public void decodeBase32() throws Exception {
+    public void testDecodeBase32() throws Exception {
         long decodeNegative = Base32.decodeBase32("-29jw");
         assertEquals(-75324, decodeNegative);
 
@@ -45,7 +45,7 @@ public class Base32Test {
 
     //    判斷此char在Base32中的characters陣列的位置為何
     @Test
-    public void getCharIndex() throws Exception {
+    public void testGetCharIndex() throws Exception {
         try {
             int noExistChar = Base32.getCharIndex('a');
             fail("no exception");
@@ -58,8 +58,8 @@ public class Base32Test {
     }
 
     @Test
-    public void padLeftWithZerosToLength() throws Exception {
-        String s = Base32.padLeftWithZerosToLength("29jw", 4);
-        assertEquals("29jw", s);
+    public void testPadLeftWithZerosToLength() throws Exception {
+        String s = Base32.padLeftWithZerosToLength("29jw", 5);
+        assertEquals("029jw", s);
     }
 }

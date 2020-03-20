@@ -32,17 +32,17 @@ public class InfoTest {
     }
 
     @Test
-    public void lon() {
+    public void testLon() {
         assertEquals(12, info.lon(), 0.001);
     }
 
     @Test
-    public void time() {
+    public void testTime() {
         assertEquals(20200317, info.time());
     }
 
     @Test
-    public void value() {
+    public void testValue() {
         assertEquals(12, info.value());
     }
 

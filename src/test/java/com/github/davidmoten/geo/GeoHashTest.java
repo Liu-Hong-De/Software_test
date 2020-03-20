@@ -4,8 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.swing.event.ListDataEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,7 +122,7 @@ public class GeoHashTest {
     }
 
     @Test
-    public void neighbours() {
+    public void testNeighbours() {
         List<String> neighbours = new ArrayList<String>();
         neighbours.add("9370");
         neighbours.add("9378");
@@ -194,7 +192,7 @@ public class GeoHashTest {
 
 //    此hash是否為此lat和lon的hash之一
     @Test
-    public void hashContains() {
+    public void testHashContains() {
         assertEquals(true, GeoHash.hashContains("s06", 2, 3));
     }
 
