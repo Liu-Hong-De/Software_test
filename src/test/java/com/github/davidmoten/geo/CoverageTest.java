@@ -30,6 +30,15 @@ public class CoverageTest {
 
     @Test
     public void testCoverage() {
+//        long[] hashes_out = {14};
+//        CoverageLongs coverageLongs_out = new CoverageLongs(hashes_out, 1, 1.8);
+//        try {
+//            Coverage coverage_long_out = new Coverage(coverageLongs_out);
+//            fail("no exception");
+//        } catch (Exception message) {
+//            assertTrue(message.getMessage().contains("invalid long geohash 13"));
+//        }
+
         long[] hashes = {3, 5, 6, 2};
         CoverageLongs coverageLongs = new CoverageLongs(hashes, 4, 1.8);
         Coverage coverage_long = new Coverage(coverageLongs);
