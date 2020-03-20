@@ -21,6 +21,7 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '16.0.1'
     compile group: 'com.github.davidmoten', name: 'grumpy-core', version: '0.2.2'
     testCompile 'junit:junit:4.12'
+    implementation 'junit:junit:4.12'
 
 }
 
