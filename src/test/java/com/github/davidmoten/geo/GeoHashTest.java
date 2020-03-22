@@ -1,5 +1,6 @@
 package com.github.davidmoten.geo;
 
+import com.google.common.collect.Sets;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -217,30 +218,40 @@ public class GeoHashTest {
 //    public void coverBoundingBoxMaxHashes() {
 //    }
 //
-//    @Test
-//    public void testCoverBoundingBox() {
-//    }
+    @Test
+    public void testCoverBoundingBoxWithLength() {
+        Set<String> str = new LinkedHashSet<String>();
+        str.add("s0");
+        str.add("s1");
+        Coverage cover = new Coverage(str,31.640625);
+        assertEquals(cover.getHashes(), GeoHash.coverBoundingBox(6, 4, 4, 6, 2).getHashes());
+        assertEquals(cover.getRatio(), GeoHash.coverBoundingBox(6, 4, 4, 6, 2).getRatio(), 0.001);
+    }
 //
 //    @Test
 //    public void coverBoundingBoxLongs() {
 //    }
 //
-//    @Test
-//    public void heightDegrees() {
-//    }
-//
+    @Test
+    public void testHeightDegrees() {
+        assertEquals(4.19095158576E-8, GeoHash.heightDegrees(13), 0.001);
+    }
+
 //    @Test
 //    public void widthDegrees() {
 //    }
-//
-//    @Test
-//    public void gridAsString() {
-//    }
-//
-//    @Test
-//    public void testGridAsString() {
-//    }
-//
+
+//    測試此hash的周圍size大小的格子為何
+    @Test
+    public void testGridAsString() {
+        assertEquals("cc f1 f3 f9 fc \ncb f0 F2 F8 fb \n9z dp dr dx dz \n9y dn dq dw dy \n9v dj dm dt dv \n", GeoHash.gridAsString("dr", 2, Sets.newHashSet("f2", "f8")));
+    }
+
+    @Test
+    public void testGridAsStringWithLine() {
+        assertEquals("f0 f2 f8 \ndp dr dx \ndn dq dw \n", GeoHash.gridAsString("dr", -1, -1, 1, 1));
+    }
+
 //    @Test
 //    public void testGridAsString1() {
 //    }
