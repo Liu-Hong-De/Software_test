@@ -4,8 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -196,10 +195,24 @@ public class GeoHashTest {
         assertEquals(true, GeoHash.hashContains("s06", 2, 3));
     }
 
-//    @Test
-//    public void coverBoundingBox() {
-//    }
-//
+//    bounding box所屬之hash九宮格和ratio是否正確
+    @Test
+    public void testCoverBoundingBox() {
+        Set<String> str = new LinkedHashSet<String>();
+        str.add("s0d");
+        str.add("s0e");
+        str.add("s0s");
+        str.add("s0f");
+        str.add("s0g");
+        str.add("s0u");
+        str.add("s14");
+        str.add("s15");
+        str.add("s1h");
+        Coverage cover = new Coverage(str,4.449462890625);
+        assertEquals(cover.getHashes(), GeoHash.coverBoundingBox(6, 4, 4, 6).getHashes());
+        assertEquals(cover.getRatio(), GeoHash.coverBoundingBox(6, 4, 4, 6).getRatio(), 0.001);
+    }
+
 //    @Test
 //    public void coverBoundingBoxMaxHashes() {
 //    }
