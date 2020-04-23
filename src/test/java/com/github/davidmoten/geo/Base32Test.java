@@ -2,7 +2,9 @@ package com.github.davidmoten.geo;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
 
@@ -15,6 +17,9 @@ public class Base32Test {
     @After
     public void tearDown() throws Exception {
     }
+
+    @Rule
+    public ExpectedException expectedEx = ExpectedException.none();
 
     //    32進制加密
     @Test
@@ -46,12 +51,9 @@ public class Base32Test {
     //    判斷此char在Base32中的characters陣列的位置為何
     @Test
     public void testGetCharIndex() throws Exception {
-        try {
-            int noExistChar = Base32.getCharIndex('a');
-            fail("no exception");
-        } catch (Exception message) {
-            assertTrue(message.getMessage().contains("not a base32 character: a"));
-        }
+        expectedEx.expect(IllegalArgumentException.class);
+        int noExistChar = Base32.getCharIndex('a');
+        expectedEx.expectMessage("not a base32 character: a");
 
         int charIndex = Base32.getCharIndex('j');
         assertEquals(17, charIndex);
@@ -125,27 +127,55 @@ public class Base32Test {
     public void testDecodeBase32WithISP() throws Exception {
         long decodeHash;
 //        C1：T, C2：T
-        try {
-            decodeHash = Base32.decodeBase32("-**83");
-            fail("no exception");
-        } catch (Exception message) {
-            assertTrue(message.getMessage().contains("not a base32 character: *"));
-        }
+        expectedEx.expect(IllegalArgumentException.class);
+        decodeHash = Base32.decodeBase32("-**83");
+        expectedEx.expectMessage("not a base32 character: *");
 
 //        C1：T, C2：F
         decodeHash = Base32.decodeBase32("-29jw");
         assertEquals(-75324, decodeHash);
 
 //        C1：F, C2：T
-        try {
-            decodeHash = Base32.decodeBase32("**83");
-            fail("no exception");
-        } catch (Exception message) {
-            assertTrue(message.getMessage().contains("not a base32 character: *"));
-        }
+        expectedEx.expect(IllegalArgumentException.class);
+        decodeHash = Base32.decodeBase32("**83");
+        expectedEx.expectMessage("not a base32 character: *");
 
 //        C1：F, C2：F
         decodeHash = Base32.decodeBase32("29jw");
         assertEquals(75324, decodeHash);
+    }
+
+//    test getCharIndex(char ch) with ISP
+//    C1：the character in the characterIndexes map
+    @Test
+    public void testGetCharIndexWithISP() throws Exception {
+//        C1：T
+        int ch_Index = Base32.getCharIndex('b');
+        assertEquals(10, ch_Index);
+
+//        C1：F
+        try {
+            ch_Index = Base32.getCharIndex('*');
+            fail("no exception");
+        } catch (Exception message) {
+            assertTrue(message.getMessage().contains("not a base32 character: *"));
+        }
+    }
+
+//    test padLeftWithZerosToLength(String s, int length) with ISP
+//    C1：s is null, C2：s.length >= length
+    @Test
+    public void testPadLeftWithZerosToLengthWithISP() throws Exception {
+//        C1：T, C2：T or F
+        expectedEx.expect(NullPointerException.class);
+        String s = Base32.padLeftWithZerosToLength(null, 8);
+
+//        C1：F, C2：T
+        s = Base32.padLeftWithZerosToLength("1234", 2);
+        assertEquals("1234", s);
+
+//        C1：F, C2：F
+        s = Base32.padLeftWithZerosToLength("1234", 6);
+        assertEquals("001234", s);
     }
 }
