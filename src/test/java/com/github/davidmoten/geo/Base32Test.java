@@ -50,10 +50,10 @@ public class Base32Test {
 
     //    判斷此char在Base32中的characters陣列的位置為何
     @Test
-    public void testGetCharIndex() {
+    public void testGetCharIndex() throws Exception{
         expectedEx.expect(IllegalArgumentException.class);
-        int noExistChar = Base32.getCharIndex('a');
         expectedEx.expectMessage("not a base32 character: a");
+        int noExistChar = Base32.getCharIndex('a');
 
         int charIndex = Base32.getCharIndex('j');
         assertEquals(17, charIndex);
@@ -128,8 +128,8 @@ public class Base32Test {
         long decodeHash;
 //        C1：T, C2：T
         expectedEx.expect(IllegalArgumentException.class);
-        decodeHash = Base32.decodeBase32("-**83");
         expectedEx.expectMessage("not a base32 character: *");
+        decodeHash = Base32.decodeBase32("-**83");
 
 //        C1：T, C2：F
         decodeHash = Base32.decodeBase32("-29jw");
@@ -137,8 +137,8 @@ public class Base32Test {
 
 //        C1：F, C2：T
         expectedEx.expect(IllegalArgumentException.class);
-        decodeHash = Base32.decodeBase32("**83");
         expectedEx.expectMessage("not a base32 character: *");
+        decodeHash = Base32.decodeBase32("**83");
 
 //        C1：F, C2：F
         decodeHash = Base32.decodeBase32("29jw");
