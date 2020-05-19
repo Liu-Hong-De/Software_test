@@ -791,4 +791,35 @@ public class GeoHashTest {
         adjacentHash = GeoHash.adjacentHash("2b", Direction.LEFT, 0);
         assertEquals("2b", adjacentHash);
     }
+
+    @Test
+    public void testEncodeHash() {
+//        P1：{1, 3, 5, 7}
+        String encodeHash = GeoHash.encodeHash(90, 90, 3);
+        assertEquals("ypb", encodeHash);
+
+//        P2：{1, 3, 5, 6}
+        try {
+            encodeHash = GeoHash.encodeHash(90, 90, 13);
+            fail("no exception");
+        } catch (IllegalArgumentException message) {
+            assertTrue(message.getMessage().contains("invalid long geohash "));
+        }
+
+//        P3：{1, 3, 4}
+        try {
+            encodeHash = GeoHash.encodeHash(91, 90, 3);
+            fail("no exception");
+        } catch (IllegalArgumentException message) {
+            assertTrue(message.getMessage().contains("latitude must be between -90 and 90 inclusive"));
+        }
+
+//        P4：{1, 2}
+        try {
+            encodeHash = GeoHash.encodeHash(90, 90, -1);
+            fail("no exception");
+        } catch (IllegalArgumentException message) {
+            assertTrue(message.getMessage().contains("length must be greater than zero"));
+        }
+    }
 }

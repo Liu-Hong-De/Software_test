@@ -212,4 +212,30 @@ public class Base32Test {
         decode = Base32.decodeBase32("");
         assertEquals(0, decode);
     }
+
+    @Test
+    public void testGetCharIndexWithBPC() {
+//        P1：{1, 2, 3}
+        try {
+            int charIndex = Base32.getCharIndex('a');
+            fail("no exception");
+        } catch (IllegalArgumentException message) {
+            assertTrue(message.getMessage().contains("not a base32 character: a"));
+        }
+
+//        P2：{1, 2, 4}
+        int charIndex = Base32.getCharIndex('b');
+        assertEquals(10, charIndex);
+    }
+
+    @Test
+    public void testPadLeftWithZerosToLengthWithBPC() {
+//        P1：{1, 2, 3, 4, 5, 6, 4, 7}
+        String pad = Base32.padLeftWithZerosToLength("1", 2);
+        assertEquals("01", pad);
+
+//        P2：{1, 8}
+        pad = Base32.padLeftWithZerosToLength("11", 1);
+        assertEquals("11", pad);
+    }
 }

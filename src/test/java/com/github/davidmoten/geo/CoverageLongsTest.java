@@ -176,4 +176,15 @@ public class CoverageLongsTest {
         coverageLongs = new CoverageLongs(hashes, 1, 1.2);
         assertEquals(1, coverageLongs.getCount());
     }
+
+    @Test
+    public void testGetHashLengthWithBPC() {
+//        P1：{1, 2}
+        CoverageLongs coverageLongs = new CoverageLongs(hashes, 0, 1.1);
+        assertEquals(0, coverageLongs.getHashLength());
+
+//        P2：{1, 3}
+        coverageLongs = new CoverageLongs(hashes, 1, 1.1);
+        assertEquals(5, coverageLongs.getHashLength());
+    }
 }
