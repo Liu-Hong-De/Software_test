@@ -178,4 +178,38 @@ public class Base32Test {
         s = Base32.padLeftWithZerosToLength("1234", 6);
         assertEquals("001234", s);
     }
+
+    @Test
+    public void testEncodeBase32WithBPC() {
+//        P1：{1, 2, 3, 4, 5, 4, 6, 7, 9}
+        String encodeHash = Base32.encodeBase32(33, 0);
+        assertEquals("11", encodeHash);
+
+//        P4：{1, 2, 3, 4, 6, 7, 9}
+        encodeHash = Base32.encodeBase32(10, 0);
+        assertEquals("b", encodeHash);
+
+//        P5：{1, 2, 4, 6, 7, 8}
+        encodeHash = Base32.encodeBase32(-10, 0);
+        assertEquals("-b", encodeHash);
+    }
+
+    @Test
+    public void testDecodeBase32WithBPC() {
+//        P1：{1, 2, 3, 4, 6, 7, 3, 8, 9, 10}
+        long decode = Base32.decodeBase32("-1b");
+        assertEquals(-42, decode);
+
+//        P3：{1, 2, 3, 4, 5}
+        try {
+            decode = Base32.decodeBase32("a");
+            fail("no message");
+        } catch (IllegalArgumentException message) {
+            assertTrue(message.getMessage().contains("not a base32 character: a"));
+        }
+
+//        P5：{1, 2, 3, 8, 10}
+        decode = Base32.decodeBase32("");
+        assertEquals(0, decode);
+    }
 }
