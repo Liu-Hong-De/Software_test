@@ -734,5 +734,61 @@ public class GeoHashTest {
         }
     }
 
+    @Test
+    public void testAdjacentHashWithBPC() {
+//        P1：{1, 3, 5, 6, 8, 9, 10, 11}
+        String adjacentHash = GeoHash.adjacentHash("2b", Direction.RIGHT);
+        assertEquals("30", adjacentHash);
 
+//        P2：{1, 3, 5, 6, 8, 9, 11}
+        adjacentHash = GeoHash.adjacentHash("11", Direction.RIGHT);
+        assertEquals("13", adjacentHash);
+
+//        P3：{1, 3, 5, 6, 7}
+        adjacentHash = GeoHash.adjacentHash("x", Direction.RIGHT);
+        assertEquals("8", adjacentHash);
+
+//        P4：{1, 3, 4}
+        try {
+            adjacentHash = GeoHash.adjacentHash("", Direction.RIGHT);
+            fail("no exception");
+        } catch (IllegalArgumentException message) {
+            assertTrue(message.getMessage().contains("adjacent has no meaning for a zero length hash that covers the whole world"));
+        }
+
+//        P5：{1, 2}
+        try {
+            adjacentHash = GeoHash.adjacentHash(null, Direction.RIGHT);
+            fail("no message");
+        } catch (IllegalArgumentException message) {
+            assertTrue(message.getMessage().contains("hash must be non-null"));
+        }
+    }
+
+    @Test
+    public void testAdjacentHashStepWithBPC() {
+//        P4：{1, 2, 1, 3, 4, 5, 8, 9, 5, 10}
+        String adjacentHash = GeoHash.adjacentHash("2b", Direction.LEFT, -1);
+        assertEquals("30", adjacentHash);
+
+//        P5：{1, 3, 4, 5, 6}
+        try {
+            adjacentHash = GeoHash.adjacentHash("", Direction.LEFT, 1);
+            fail("no exception");
+        } catch (IllegalArgumentException message) {
+            assertTrue(message.getMessage().contains("adjacent has no meaning for a zero length hash that covers the whole world"));
+        }
+
+//        P6：{1, 3, 4, 5, 7}
+        try {
+            adjacentHash = GeoHash.adjacentHash(null, Direction.LEFT, 1);
+            fail("no exception");
+        } catch (IllegalArgumentException message) {
+            assertTrue(message.getMessage().contains("hash must be non-null"));
+        }
+
+//        P7：{1, 3, 4, 5, 10}
+        adjacentHash = GeoHash.adjacentHash("2b", Direction.LEFT, 0);
+        assertEquals("2b", adjacentHash);
+    }
 }
