@@ -1,0 +1,5 @@
+ libsystem:
+   image: ntutselab/libsystem
+   ports:
+    - "80:80"
+    - "4444:4444"
