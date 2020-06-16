@@ -417,7 +417,7 @@
         <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Module Controller" enabled="true">
           <collectionProp name="ModuleController.node_path">
             <stringProp name="764597751">Test Plan</stringProp>
-            <stringProp name="73596745">Login</stringProp>
+            <stringProp name="2603186">Test</stringProp>
             <stringProp name="73596745">Login</stringProp>
           </collectionProp>
         </ModuleController>
@@ -425,7 +425,7 @@
         <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Module Controller" enabled="true">
           <collectionProp name="ModuleController.node_path">
             <stringProp name="764597751">Test Plan</stringProp>
-            <stringProp name="73596745">Login</stringProp>
+            <stringProp name="2603186">Test</stringProp>
             <stringProp name="-2013462102">Logout</stringProp>
           </collectionProp>
         </ModuleController>
