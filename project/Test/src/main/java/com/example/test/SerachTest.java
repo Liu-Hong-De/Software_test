@@ -101,6 +101,34 @@ public class SerachTest {
         Assert.assertEquals("new notebook", driver.findElement(By.xpath(".//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup/android.widget.TextView[2][@text='new notebook']")).getText());
     }
 
+    //    test search note with special character
+    @Test
+    public void test_SearchSpecialCharacter() throws InterruptedException {
+        driver.findElement(By.xpath(".//*[@text='好的']")).click();
+        driver.navigate().back();
+//        create notebook
+        driver.findElement(By.id("fab")).click();
+        driver.findElement(By.id("dialog_input")).sendKeys("new notebook");
+        driver.findElement(By.id("button1")).click();
+
+        Thread.sleep(1000);
+//        create note with english title in the new notebook
+        driver.findElement(By.xpath(".//*[@text='new notebook']")).click();
+        driver.findElement(By.id("fab")).click();
+        driver.findElement(By.id("fragment_note_title")).sendKeys("~!@#$%^&*()");
+        driver.findElement(By.id("done")).click();
+
+        driver.findElement(By.xpath("//android.widget.ImageButton[@content-desc=\"打開抽屜\"]")).click();
+        driver.findElement(By.xpath(".//*[@text='筆記本']")).click();
+//        search
+        driver.findElement(By.id("activity_action_search")).click();
+        driver.findElement(By.id("search_src_text")).sendKeys("~!@#$%^&*()");
+        driver.executeScript("mobile: performEditorAction", ImmutableMap.of("action", "search"));
+
+        Assert.assertEquals("~!@#$%^&*()", driver.findElement(By.xpath(".//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup/android.widget.TextView[1][@text='~!@#$%^&*()']")).getText());
+        Assert.assertEquals("new notebook", driver.findElement(By.xpath(".//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup/android.widget.TextView[2][@text='new notebook']")).getText());
+    }
+
 //    test search note with empty
 //    when the search title is empty , the search box is also displayed after searching
     @Test
@@ -247,6 +275,64 @@ public class SerachTest {
         Assert.assertEquals("不能留空", driver.findElement(By.id("textinput_error")).getText());
     }
 
+//    test create notebook condition
+//    Name：特殊符號，Query：True
+    @Test
+    public void test_Search_SpecialCharacter_TrueQuery() {
+        driver.findElement(By.xpath(".//*[@text='好的']")).click();
+        driver.navigate().back();
+        driver.findElement(By.xpath("//android.widget.ImageButton[@content-desc=\"打開抽屜\"]")).click();
+        driver.findElement(By.xpath(".//*[@text='搜尋']")).click();
+//        create search condition
+        driver.findElement(By.id("fab")).click();
+        driver.findElement(By.id("fragment_saved_search_name")).sendKeys("~!@#$%^&*()");
+        driver.findElement(By.id("fragment_saved_search_query")).sendKeys(".it.done");
+        driver.findElement(By.id("done")).click();
+
+        Assert.assertEquals("~!@#$%^&*()", driver.findElement(By.xpath(".//*[@text='~!@#$%^&*()']")).getText());
+        Assert.assertEquals(".it.done", driver.findElement(By.xpath(".//*[@text='.it.done']")).getText());
+        driver.findElement(By.xpath("//android.widget.ImageButton[@content-desc=\"打開抽屜\"]")).click();
+        Assert.assertEquals("~!@#$%^&*()", driver.findElement(By.xpath(".//*[@text='~!@#$%^&*()']")).getText());
+    }
+
+//    test create search condition
+//    Name：特殊符號，Query：False
+//    當查詢為錯誤語法時，搜尋必沒有任何結果
+    @Test
+    public void test_Search_SpecialCharacter_FalseQuery() throws InterruptedException {
+        driver.findElement(By.xpath(".//*[@text='好的']")).click();
+        driver.navigate().back();
+        driver.findElement(By.xpath("//android.widget.ImageButton[@content-desc=\"打開抽屜\"]")).click();
+        driver.findElement(By.xpath(".//*[@text='搜尋']")).click();
+//        create search condition
+        driver.findElement(By.id("fab")).click();
+        driver.findElement(By.id("fragment_saved_search_name")).sendKeys("~!@#$%^&*()");
+        driver.findElement(By.id("fragment_saved_search_query")).sendKeys("false query");
+        driver.findElement(By.id("done")).click();
+
+        Thread.sleep(1000);
+        Assert.assertEquals("~!@#$%^&*()", driver.findElement(By.xpath(".//*[@text='~!@#$%^&*()']")).getText());
+        Assert.assertEquals("false query", driver.findElement(By.xpath(".//*[@text='false query']")).getText());
+        driver.findElement(By.xpath("//android.widget.ImageButton[@content-desc=\"打開抽屜\"]")).click();
+        Assert.assertEquals("~!@#$%^&*()", driver.findElement(By.xpath(".//*[@text='~!@#$%^&*()']")).getText());
+        driver.findElement(By.xpath(".//*[@text='~!@#$%^&*()']")).click();
+        Assert.assertEquals("您的搜尋沒有任何結果", driver.findElement(By.xpath(".//*[@text='您的搜尋沒有任何結果']")).getText());
+    }
+
+//    test create search condition
+//    Name：特殊符號，Query：empty
+    @Test
+    public void test_Search_SpecialCharacter_EmptyQuery() {
+        driver.findElement(By.xpath(".//*[@text='好的']")).click();
+        driver.navigate().back();
+        driver.findElement(By.xpath("//android.widget.ImageButton[@content-desc=\"打開抽屜\"]")).click();
+        driver.findElement(By.xpath(".//*[@text='搜尋']")).click();
+        driver.findElement(By.id("fab")).click();
+        driver.findElement(By.id("fragment_saved_search_name")).sendKeys("~!@#$%^&*()");
+        driver.findElement(By.id("done")).click();
+        Assert.assertEquals("不能留空", driver.findElement(By.id("textinput_error")).getText());
+    }
+
     //    Name：empty，Query：True
     @Test
     public void test_Search_Empty_TrueQuery() {
@@ -273,7 +359,7 @@ public class SerachTest {
         Assert.assertEquals("不能留空", driver.findElement(By.id("textinput_error")).getText());
     }
 
-    //    Name：empty，Query：False
+    //    Name：empty，Query：empty
     @Test
     public void test_Search_Empty_EmptyQuery() {
         driver.findElement(By.xpath(".//*[@text='好的']")).click();

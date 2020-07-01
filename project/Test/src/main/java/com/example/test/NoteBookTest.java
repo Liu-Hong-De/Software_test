@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -57,7 +58,7 @@ public class NoteBookTest {
     }
 
 //    test create notebook
-//    name：english
+    //    name：english
     @Test
     public void test_createNoteBookWithEnglish() {
         driver.findElement(By.xpath(".//*[@text='好的']")).click();
@@ -67,6 +68,19 @@ public class NoteBookTest {
         driver.findElement(By.id("button1")).click();
 
         Assert.assertEquals("test", driver.findElement(By.xpath(".//*[@text='test']")).getText());
+    }
+
+    //    test create notebook
+//    name：special character
+    @Test
+    public void test_createNoteBookWithSpecialCharacter() {
+        driver.findElement(By.xpath(".//*[@text='好的']")).click();
+        driver.navigate().back();
+        driver.findElement(By.id("fab")).click();
+        driver.findElement(By.id("dialog_input")).sendKeys("~!@#$%^&*()");
+        driver.findElement(By.id("button1")).click();
+
+        Assert.assertEquals("~!@#$%^&*()", driver.findElement(By.xpath(".//*[@text='~!@#$%^&*()']")).getText());
     }
 
 //    test create notebook
@@ -123,6 +137,28 @@ public class NoteBookTest {
         driver.findElement(By.id("button1")).click();
 
         Assert.assertEquals("編輯過的筆記本", driver.findElement(By.xpath(".//*[@text='編輯過的筆記本']")).getText());
+    }
+
+//    test edit notebook
+//    edit name：special character
+    @Test
+    public void test_editNoteBookToSpecialCharacter() throws InterruptedException {
+        driver.findElement(By.xpath(".//*[@text='好的']")).click();
+        driver.navigate().back();
+        driver.findElement(By.id("fab")).click();
+        driver.findElement(By.id("dialog_input")).sendKeys("new notebook");
+        driver.findElement(By.id("button1")).click();
+
+        Thread.sleep(1000);
+        TouchAction ta = new TouchAction(driver);
+        ta.longPress(driver.findElement(By.xpath(".//*[@text='new notebook']")), 2000).release().perform();
+        driver.findElement(By.xpath("(//android.widget.ImageView[@content-desc=\"更多選項\"])[1]")).click();
+        driver.findElement(By.xpath(".//*[@text='重新命名']")).click();
+        driver.findElement(By.id("name")).clear();
+        driver.findElement(By.id("name")).sendKeys("~!@#$%^&*()");
+        driver.findElement(By.id("button1")).click();
+
+        Assert.assertEquals("~!@#$%^&*()", driver.findElement(By.xpath(".//*[@text='~!@#$%^&*()']")).getText());
     }
 
 //    test edit notebook

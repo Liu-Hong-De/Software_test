@@ -72,6 +72,35 @@ public class Display {
         Assert.assertEquals("note1", driver.findElement(By.xpath("//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[2]/android.widget.TextView[1]")).getText());
     }
 
+//    border
+    @Test
+    public void test_Display_BorderMoveUp() throws InterruptedException {
+        driver.findElement(By.xpath(".//*[@text='好的']")).click();
+        driver.navigate().back();
+        driver.findElement(By.id("fab")).click();
+        driver.findElement(By.id("dialog_input")).sendKeys("new notebook");
+        driver.findElement(By.id("button1")).click();
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath(".//*[@text='new notebook']")).click();
+        driver.findElement(By.id("fab")).click();   // +
+        driver.findElement(By.id("fragment_note_title")).sendKeys("note1");  // note
+        driver.findElement(By.id("done")).click();
+        driver.findElement(By.id("fab")).click();   // +
+        driver.findElement(By.id("fragment_note_title")).sendKeys("note2");  // note
+        driver.findElement(By.id("done")).click();
+
+        TouchAction ta = new TouchAction(driver);
+        ta.longPress(driver.findElement(By.xpath(".//*[@text='note1']")), 2000).release().perform();
+        driver.findElement(By.xpath("(//android.widget.ImageView[@content-desc=\"更多選項\"])[1]")).click();
+        driver.findElement(By.xpath(".//*[@text='移動']")).click();
+        driver.findElement(By.id("notes_action_move_up")).click();
+        driver.findElement(By.id("action_mode_close_button")).click();
+
+        Assert.assertEquals("note1", driver.findElement(By.xpath("//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[1]/android.widget.TextView[1]")).getText());
+        Assert.assertEquals("note2", driver.findElement(By.xpath("//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[2]/android.widget.TextView[1]")).getText());
+    }
+
     @Test
     public void test_Display_MoveDown() throws InterruptedException {
         driver.findElement(By.xpath(".//*[@text='好的']")).click();
@@ -100,6 +129,35 @@ public class Display {
         Assert.assertEquals("note1", driver.findElement(By.xpath("//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[2]/android.widget.TextView[1]")).getText());
     }
 
+//    border
+    @Test
+    public void test_Display_BorderMoveDown() throws InterruptedException {
+        driver.findElement(By.xpath(".//*[@text='好的']")).click();
+        driver.navigate().back();
+        driver.findElement(By.id("fab")).click();
+        driver.findElement(By.id("dialog_input")).sendKeys("new notebook");
+        driver.findElement(By.id("button1")).click();
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath(".//*[@text='new notebook']")).click();
+        driver.findElement(By.id("fab")).click();   // +
+        driver.findElement(By.id("fragment_note_title")).sendKeys("note1");  // note
+        driver.findElement(By.id("done")).click();
+        driver.findElement(By.id("fab")).click();   // +
+        driver.findElement(By.id("fragment_note_title")).sendKeys("note2");  // note
+        driver.findElement(By.id("done")).click();
+
+        TouchAction ta = new TouchAction(driver);
+        ta.longPress(driver.findElement(By.xpath(".//*[@text='note2']")), 2000).release().perform();
+        driver.findElement(By.xpath("(//android.widget.ImageView[@content-desc=\"更多選項\"])[1]")).click();
+        driver.findElement(By.xpath(".//*[@text='移動']")).click();
+        driver.findElement(By.id("notes_action_move_down")).click();
+        driver.findElement(By.id("action_mode_close_button")).click();
+
+        Assert.assertEquals("note1", driver.findElement(By.xpath("//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[1]/android.widget.TextView[1]")).getText());
+        Assert.assertEquals("note2", driver.findElement(By.xpath("//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[2]/android.widget.TextView[1]")).getText());
+    }
+
     @Test
     public void test_Display_MoveRight() throws InterruptedException {
         driver.findElement(By.xpath(".//*[@text='好的']")).click();
@@ -119,6 +177,43 @@ public class Display {
 
         TouchAction ta = new TouchAction(driver);
         ta.longPress(driver.findElement(By.xpath(".//*[@text='note2']")), 2000).release().perform();
+        driver.findElement(By.xpath("(//android.widget.ImageView[@content-desc=\"更多選項\"])[1]")).click();
+        driver.findElement(By.xpath(".//*[@text='移動']")).click();
+        driver.findElement(By.id("notes_action_move_right")).click();
+        driver.findElement(By.id("action_mode_close_button")).click();
+
+        Assert.assertEquals("note1", driver.findElement(By.xpath("//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[1]/android.widget.TextView[1]")).getText());
+        Assert.assertTrue(driver.findElement(By.xpath("//android.view.ViewGroup[2]/android.widget.LinearLayout/android.widget.FrameLayout")).isDisplayed());
+        Assert.assertEquals("note2", driver.findElement(By.xpath("//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[2]/android.widget.TextView[1]")).getText());
+    }
+
+//    border
+    @Test
+    public void test_Display_BorderMoveRight() throws InterruptedException {
+        driver.findElement(By.xpath(".//*[@text='好的']")).click();
+        driver.navigate().back();
+        driver.findElement(By.id("fab")).click();
+        driver.findElement(By.id("dialog_input")).sendKeys("new notebook");
+        driver.findElement(By.id("button1")).click();
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath(".//*[@text='new notebook']")).click();
+        driver.findElement(By.id("fab")).click();   // +
+        driver.findElement(By.id("fragment_note_title")).sendKeys("note1");  // note
+        driver.findElement(By.id("done")).click();
+        driver.findElement(By.id("fab")).click();   // +
+        driver.findElement(By.id("fragment_note_title")).sendKeys("note2");  // note
+        driver.findElement(By.id("done")).click();
+
+        TouchAction ta = new TouchAction(driver);
+        ta.longPress(driver.findElement(By.xpath(".//*[@text='note2']")), 2000).release().perform();
+        driver.findElement(By.xpath("(//android.widget.ImageView[@content-desc=\"更多選項\"])[1]")).click();
+        driver.findElement(By.xpath(".//*[@text='移動']")).click();
+        driver.findElement(By.id("notes_action_move_right")).click();
+        driver.findElement(By.id("action_mode_close_button")).click();
+
+        TouchAction ta1 = new TouchAction(driver);
+        ta1.longPress(driver.findElement(By.xpath(".//*[@text='note2']")), 2000).release().perform();
         driver.findElement(By.xpath("(//android.widget.ImageView[@content-desc=\"更多選項\"])[1]")).click();
         driver.findElement(By.xpath(".//*[@text='移動']")).click();
         driver.findElement(By.id("notes_action_move_right")).click();
@@ -170,6 +265,35 @@ public class Display {
         Assert.assertEquals("note2", driver.findElement(By.xpath("//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[2]/android.widget.TextView[1]")).getText());
     }
 
+//    border
+    @Test
+    public void test_Display_BorderMoveLeft() throws InterruptedException {
+        driver.findElement(By.xpath(".//*[@text='好的']")).click();
+        driver.navigate().back();
+        driver.findElement(By.id("fab")).click();
+        driver.findElement(By.id("dialog_input")).sendKeys("new notebook");
+        driver.findElement(By.id("button1")).click();
+        Thread.sleep(1000);
+
+        driver.findElement(By.xpath(".//*[@text='new notebook']")).click();
+        driver.findElement(By.id("fab")).click();   // +
+        driver.findElement(By.id("fragment_note_title")).sendKeys("note1");  // note
+        driver.findElement(By.id("done")).click();
+        driver.findElement(By.id("fab")).click();   // +
+        driver.findElement(By.id("fragment_note_title")).sendKeys("note2");  // note
+        driver.findElement(By.id("done")).click();
+
+        TouchAction ta1 = new TouchAction(driver);
+        ta1.longPress(driver.findElement(By.xpath(".//*[@text='note1']")),2000).release().perform();
+        driver.findElement(By.xpath("(//android.widget.ImageView[@content-desc=\"更多選項\"])[1]")).click();
+        driver.findElement(By.xpath(".//*[@text='移動']")).click();
+        driver.findElement(By.id("notes_action_move_left")).click();
+        driver.findElement(By.id("action_mode_close_button")).click();
+
+        Assert.assertEquals("note1", driver.findElement(By.xpath("//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[1]/android.widget.TextView[1]")).getText());
+        Assert.assertEquals("note2", driver.findElement(By.xpath("//androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[2]/android.widget.TextView[1]")).getText());
+    }
+
     @Test
     public void test_Display_MoveNoteBook() throws InterruptedException {
         driver.findElement(By.xpath(".//*[@text='好的']")).click();
@@ -200,6 +324,36 @@ public class Display {
         driver.findElement(By.xpath(".//*[@text='another notebook']")).click();
         Thread.sleep(1000);
         Assert.assertEquals("note1", driver.findElement(By.xpath(".//*[@text='note1']")).getText());
+    }
+
+    @Test
+    public void test_Display_MoveNoteBookFail() throws InterruptedException {
+        driver.findElement(By.xpath(".//*[@text='好的']")).click();
+        driver.navigate().back();
+        driver.findElement(By.id("fab")).click();
+        driver.findElement(By.id("dialog_input")).sendKeys("new notebook");
+        driver.findElement(By.id("button1")).click();
+
+        driver.findElement(By.id("fab")).click();
+        driver.findElement(By.id("dialog_input")).sendKeys("another notebook");
+        driver.findElement(By.id("button1")).click();
+
+        Thread.sleep(1000);
+        driver.findElement(By.xpath(".//*[@text='new notebook']")).click();
+        driver.findElement(By.id("fab")).click();   // +
+        driver.findElement(By.id("fragment_note_title")).sendKeys("note1");  // note
+        driver.findElement(By.id("done")).click();
+
+        TouchAction ta = new TouchAction(driver);
+        ta.longPress(driver.findElement(By.xpath(".//*[@text='note1']")), 2000).release().perform();
+        driver.findElement(By.xpath("(//android.widget.ImageView[@content-desc=\"更多選項\"])[1]")).click();
+        driver.findElement(By.xpath(".//*[@text='移動筆記']")).click();
+        Thread.sleep(10000);
+        driver.findElement(By.xpath(".//*[@text='new notebook']")).click();
+        driver.findElement(By.id("item_refile_button")).click();
+
+        Thread.sleep(1000);
+        Assert.assertEquals("無法轉移到相同的子目錄", driver.findElement(By.xpath(".//*[@text='無法轉移到相同的子目錄']")).getText());
     }
 
     @Test
